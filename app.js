@@ -11,6 +11,7 @@ var express = require('express'),
 
 // var port = process.env.PORT || 8080;
 var port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
+var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 
 // Initialize a new socket.io object. It is bound to 
 // the express app, which allows them to coexist.
