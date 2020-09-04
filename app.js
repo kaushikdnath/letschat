@@ -3,7 +3,7 @@
 // and listens on a port. Start the application by running
 // 'node app.js' in your terminal
 
-//This is the master branch
+//This is the bB branch
 
 var express = require('express'),
 	app = express();
