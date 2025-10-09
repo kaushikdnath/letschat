@@ -108,6 +108,30 @@ class ChatStore {
       }
     }
   }
+
+  deleteRoom(roomId: string): boolean {
+    const room = this.rooms.get(roomId)
+    if (!room) return false
+
+    // notify any subscribers the room is being deleted
+    const subs = this.subscribers.get(roomId)
+    if (subs && subs.size > 0) {
+      for (const cb of subs) {
+        try {
+          cb({ type: "system", text: "room-deleted" })
+        } catch {
+          // ignore subscriber errors
+        }
+      }
+    }
+
+    // remove from indexes and maps
+    this.rooms.delete(roomId)
+    this.roomNameIndex.delete(room.name.trim().toLowerCase())
+    this.messages.delete(roomId)
+    this.subscribers.delete(roomId)
+    return true
+  }
 }
 
 let _store: ChatStore | null = null
@@ -117,4 +141,8 @@ export function getChatStore(): ChatStore {
     _store = new ChatStore()
   }
   return _store
+}
+
+export function deleteRoom(roomId: string): boolean {
+  return getChatStore().deleteRoom(roomId)
 }
